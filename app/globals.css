@@ -88,18 +88,18 @@ body {
   pointer-events: none;
   background-image: url("/mangrove-teal.webp");
   background-repeat: no-repeat;
-  background-position: center 5svh;
+  background-position: center -4svh;
   background-size: auto min(128svh, 235vw);
   opacity: calc(var(--artwork-opacity) * (1 - var(--sp, 0) * 0.4));
-  transform: scale(calc(1 - var(--sp, 0) * 0.16));
-  transform-origin: center 40%;
+  transform: scale(calc(1 - var(--sp, 0) * 0.33));
+  transform-origin: center 32%;
   will-change: transform, opacity;
 }
 
 @media (min-width: 768px) {
   .artwork-veil {
-    background-position: center 4svh;
-    background-size: auto min(148svh, 118vw);
+    background-position: center -13svh;
+    background-size: auto min(178svh, 132vw);
   }
 }
 
@@ -144,7 +144,9 @@ body {
   position: sticky;
   /* Derived from the title's measured bottom edge, with a fallback for the
      first paint and for scripting-off. */
-  top: calc(var(--hero-bottom, 32svh) + 5svh);
+  /* Fixed gap rather than a viewport fraction — 5svh is only 40px on a phone,
+     which was not enough clearance below the thesis line. */
+  top: calc(var(--hero-bottom, 32svh) + 4.5rem);
 }
 
 /*

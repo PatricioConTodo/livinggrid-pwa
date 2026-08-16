@@ -60,9 +60,16 @@ export default function ScrollProgress() {
 
     const update = () => {
       frame = 0;
-      // Spread across more than one screen of scrolling so the artwork eases
-      // out slowly rather than snapping away in the first flick of a thumb.
-      const span = window.innerHeight * 1.8;
+      /*
+        Span is the page's ACTUAL scrollable distance, not a multiple of the
+        viewport. Tying it to viewport height meant that once the page was
+        trimmed to remove dead scroll, the range outran the page: on a phone
+        progress only ever reached about 0.38, so the artwork barely moved.
+      */
+      const span = Math.max(
+        1,
+        document.documentElement.scrollHeight - window.innerHeight,
+      );
       const raw = Math.min(1, Math.max(0, window.scrollY / span));
       // Smoothstep: gentle at both ends, no abrupt start or stop.
       const p = raw * raw * (3 - 2 * raw);
