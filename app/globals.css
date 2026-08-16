@@ -20,7 +20,7 @@
   --accent: var(--teal-deep);
   --accent-contrast: #ffffff;
   --hairline: #e0cfd1;
-  --card: rgba(255, 253, 253, 0.34);
+  --card: rgba(255, 253, 253, 0.74);
   --artwork-opacity: 0.16;
   /* Deeper rose in light mode — the inspo pink is almost the background colour
      here, so the bird would disappear into it. */
@@ -36,7 +36,7 @@
     --accent: var(--teal-mid);
     --accent-contrast: #06181a;
     --hairline: #244145;
-    --card: rgba(16, 38, 41, 0.3);
+    --card: rgba(16, 38, 41, 0.72);
     --artwork-opacity: 0.28;
     /* The inspo pink itself, which is what it was made for: rose on deep teal. */
     --mark: var(--rose);
@@ -70,24 +70,47 @@ body {
   WebP as a mask source is unreliable and fails silently — the element renders
   nothing at all, which is exactly how the logo vanished on mobile.
 
-  The drawing is 4:5 and its meaning lives in the middle: a skyline nested inside
-  mangrove roots. Sized by HEIGHT so the whole composition clears the card rather
-  than cropping to canopy, which just reads as generic foliage.
+  Fixed to the viewport and given the lower half of the first screen, so the
+  drawing has room below the title rather than competing with it. --sp is scroll
+  progress, published by ScrollProgress: the artwork shrinks and fades as the
+  panel rises to cover it.
 */
 .artwork-veil {
-  opacity: var(--artwork-opacity);
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
   background-image: url("/mangrove-teal.webp");
   background-repeat: no-repeat;
-  background-position: center 1.5rem;
-  background-size: auto min(58vh, 118vw);
+  background-position: center bottom -2svh;
+  background-size: auto min(66svh, 140vw);
+  opacity: calc(var(--artwork-opacity) * (1 - var(--sp, 0) * 0.45));
+  transform: scale(calc(1 - var(--sp, 0) * 0.22));
+  transform-origin: center 88%;
+  will-change: transform, opacity;
 }
 
-/* On wider screens the drawing has room to be a presence rather than a motif. */
 @media (min-width: 768px) {
   .artwork-veil {
-    background-position: center top;
-    background-size: auto max(105vh, 62vw);
+    background-size: auto min(78svh, 60vw);
   }
+}
+
+/* The title block holds still while the panel scrolls up over it. */
+.hero {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  min-height: 100svh;
+  display: flex;
+  align-items: flex-start;
+  padding-top: 16svh;
+}
+
+.panel {
+  position: relative;
+  z-index: 20;
+  min-height: 100svh;
 }
 
 /*

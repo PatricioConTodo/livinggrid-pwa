@@ -1,15 +1,18 @@
 import { auth, signIn, signOut } from "@/auth";
+import ScrollProgress from "./scroll-progress";
 
 export default async function Home() {
   const session = await auth();
 
   return (
-    <main className="relative min-h-screen overflow-hidden">
-      {/* Mangrove roots holding a city — the thesis, drawn. Purely decorative. */}
-      <div className="artwork-veil pointer-events-none absolute inset-0" aria-hidden="true" />
+    <main className="relative">
+      <ScrollProgress />
 
-      <div className="relative flex min-h-screen items-center justify-center px-6 py-16">
-        <div className="rise w-full max-w-md">
+      {/* Mangrove roots holding a city — the thesis, drawn. Purely decorative. */}
+      <div className="artwork-veil" aria-hidden="true" />
+
+      <section className="hero px-6">
+        <div className="rise mx-auto w-full max-w-md">
           <div className="flex items-center gap-3.5">
             <span className="mark h-11 w-11 shrink-0" role="img" aria-label="Living Grid" />
             <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
@@ -20,8 +23,12 @@ export default async function Home() {
           <p className="mt-3 text-[15px] leading-relaxed text-[var(--muted)]">
             Discovering urban ecosystems through verifiable bio-acoustic data.
           </p>
+        </div>
+      </section>
 
-          <div className="mt-10 rounded-xl border border-[var(--hairline)] bg-[var(--card)] p-6 backdrop-blur-md">
+      <section className="panel flex items-start justify-center px-6 pb-24">
+        <div className="w-full max-w-md">
+          <div className="rounded-xl border border-[var(--hairline)] bg-[var(--card)] p-6 backdrop-blur-md">
             {session?.user ? (
               <>
                 <p className="text-[11px] uppercase tracking-[0.14em] text-[var(--muted)]">
@@ -78,7 +85,7 @@ export default async function Home() {
             and conservation.
           </p>
         </div>
-      </div>
+      </section>
     </main>
   );
 }
