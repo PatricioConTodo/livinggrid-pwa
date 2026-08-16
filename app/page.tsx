@@ -10,10 +10,15 @@ export default async function Home() {
 
       <div className="relative flex min-h-screen items-center justify-center px-6 py-16">
         <div className="rise w-full max-w-md">
-          <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">Living Grid</h1>
+          <div className="flex items-center gap-3.5">
+            <span className="mark h-11 w-11 shrink-0" role="img" aria-label="Living Grid" />
+            <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
+              Living Grid
+            </h1>
+          </div>
 
           <p className="mt-3 text-[15px] leading-relaxed text-[var(--muted)]">
-            Making urban ecosystems legible through verifiable acoustic data.
+            Discovering urban ecosystems through verifiable bio-acoustic data.
           </p>
 
           <div className="mt-10 rounded-xl border border-[var(--hairline)] bg-[var(--card)] p-6 backdrop-blur-[2px]">
@@ -44,11 +49,11 @@ export default async function Home() {
             ) : (
               <>
                 <p className="text-[15px] leading-relaxed">
-                  Leave your phone outside for an hour. Find out who lives on your block.
+                  Leave your phone outside. Protect local creatures.
                 </p>
                 <p className="mt-2.5 text-sm leading-relaxed text-[var(--muted)]">
-                  Your recordings become evidence — the kind that shapes what gets
-                  planted, protected and built.
+                  Your voice-memo submissions become ecological evidence. This is
+                  how you help them.
                 </p>
 
                 <form
@@ -69,7 +74,8 @@ export default async function Home() {
           </div>
 
           <p className="mt-6 text-[13px] leading-relaxed text-[var(--muted)]">
-            A citizen network listening to the places most people actually live.
+            A decentralized urban research network to guide policy, development,
+            and conservation.
           </p>
         </div>
       </div>
