@@ -21,7 +21,7 @@ export default async function Home() {
             Discovering urban ecosystems through verifiable bio-acoustic data.
           </p>
 
-          <div className="mt-10 rounded-xl border border-[var(--hairline)] bg-[var(--card)] p-6 backdrop-blur-[2px]">
+          <div className="mt-10 rounded-xl border border-[var(--hairline)] bg-[var(--card)] p-6 backdrop-blur-md">
             {session?.user ? (
               <>
                 <p className="text-[11px] uppercase tracking-[0.14em] text-[var(--muted)]">

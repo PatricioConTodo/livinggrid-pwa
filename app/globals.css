@@ -20,7 +20,7 @@
   --accent: var(--teal-deep);
   --accent-contrast: #ffffff;
   --hairline: #e0cfd1;
-  --card: rgba(255, 253, 253, 0.55);
+  --card: rgba(255, 253, 253, 0.34);
   --artwork-opacity: 0.16;
   /* Deeper rose in light mode — the inspo pink is almost the background colour
      here, so the bird would disappear into it. */
@@ -36,7 +36,7 @@
     --accent: var(--teal-mid);
     --accent-contrast: #06181a;
     --hairline: #244145;
-    --card: rgba(16, 38, 41, 0.5);
+    --card: rgba(16, 38, 41, 0.3);
     --artwork-opacity: 0.28;
     /* The inspo pink itself, which is what it was made for: rose on deep teal. */
     --mark: var(--rose);
@@ -80,6 +80,14 @@ body {
   background-repeat: no-repeat;
   background-position: center 1.5rem;
   background-size: auto min(58vh, 118vw);
+}
+
+/* On wider screens the drawing has room to be a presence rather than a motif. */
+@media (min-width: 768px) {
+  .artwork-veil {
+    background-position: center top;
+    background-size: auto max(105vh, 62vw);
+  }
 }
 
 /*
