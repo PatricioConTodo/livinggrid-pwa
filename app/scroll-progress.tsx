@@ -56,10 +56,7 @@ export default function ScrollProgress() {
       };
     }
 
-    let frame = 0;
-
     const update = () => {
-      frame = 0;
       /*
         Span is the page's ACTUAL scrollable distance, not a multiple of the
         viewport. Tying it to viewport height meant that once the page was
@@ -76,17 +73,19 @@ export default function ScrollProgress() {
       document.documentElement.style.setProperty("--sp", p.toFixed(4));
     };
 
-    const onScroll = () => {
-      if (frame) return;
-      frame = requestAnimationFrame(update);
-    };
+    /*
+      Runs straight off the scroll event rather than deferring to an animation
+      frame. Setting one custom property is cheap, and the rAF version could
+      stall — frames are throttled or suspended in backgrounded and hidden
+      views, leaving the artwork frozen at whatever value it last held.
+    */
+    const onScroll = update;
 
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll, { passive: true });
 
     return () => {
-      if (frame) cancelAnimationFrame(frame);
       observer.disconnect();
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);

@@ -23,13 +23,14 @@
 
   /* Deep teal-black water, warm rose-tinted light. */
   --background: #0d1e20;
-  --foreground: #e9dcdd;
-  --muted: #92a9ab;
+  /* Type takes the same rose as the mark, so the palette reads as one system. */
+  --foreground: #ecc5c9;
+  --muted: #bb99a0;
   --accent: var(--teal-mid);
   --accent-contrast: #06181a;
   --hairline: #244145;
   --card: rgba(16, 38, 41, 0.72);
-  --artwork-opacity: 0.43;
+  --artwork-opacity: 0.56;
   /* The inspo pink, which is exactly what it was printed for: rose on teal. */
   --mark: var(--rose);
 }
@@ -99,7 +100,9 @@ body {
 @media (min-width: 768px) {
   .artwork-veil {
     background-position: center -13svh;
-    background-size: auto min(178svh, 132vw);
+    /* Hard ceiling so a fullscreen window does not keep growing the drawing
+       while the type stays put, which opens a gap under the title. */
+    background-size: auto min(178svh, 132vw, 1250px);
   }
 }
 
@@ -125,14 +128,17 @@ body {
 .panel {
   position: relative;
   z-index: 20;
-  /* One screen of clear space before the panel begins to rise. */
-  margin-top: 100svh;
+  /* Just under a screen, so the top edge of the card teases into view and
+     invites the scroll rather than hiding completely below the fold. */
+  margin-top: 86svh;
   /*
-    Sized so the card arrives at its stop just as the page runs out of scroll.
-    Any taller and there is dead scrolling after it lands, which is what made
-    the composition feel like it was drifting on desktop.
+    Enough height for the card to travel to its stop, plus a buffer so the
+    container's bottom edge never rises far enough to shove the sticky card
+    back up past its stop. That shove is what made the card break its landing
+    and climb onto the thesis line on a phone, where the URL bar sliding away
+    changes the viewport and hands the page extra scroll.
   */
-  min-height: calc(100svh - var(--hero-bottom, 30svh) - 4svh);
+  min-height: calc(86svh - var(--hero-bottom, 30svh) + 7rem);
 }
 
 /*
