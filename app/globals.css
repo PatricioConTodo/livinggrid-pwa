@@ -1,26 +1,93 @@
 @import "tailwindcss";
 
+/*
+  Palette sampled directly from the Biscayne Bay shirts, not chosen by eye.
+  Primary system is the rose fabric with teal ink; the bone-and-moss system is
+  held back for text-dense pages (reports, species profiles) where the herbarium
+  feel reads better and tires the eye less.
+*/
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --rose: #ecc5c9;
+  --teal-deep: #1b8088;
+  --teal-mid: #559ba1;
+  --bone: #dbd6ca;
+  --moss: #778c33;
+
+  /* Light: pale rose paper, deep teal ink — the shirt, inverted for reading. */
+  --background: #fbf3f3;
+  --foreground: #16383b;
+  --muted: #5c7275;
+  --accent: var(--teal-deep);
+  --accent-contrast: #ffffff;
+  --hairline: #e0cfd1;
+  --card: rgba(255, 255, 255, 0.62);
+  --artwork: var(--teal-deep);
+  --artwork-opacity: 0.1;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Dark: deep teal-black water, warm rose-tinted light. */
+    --background: #0d1e20;
+    --foreground: #e9dcdd;
+    --muted: #92a9ab;
+    --accent: var(--teal-mid);
+    --accent-contrast: #06181a;
+    --hairline: #1f3a3d;
+    --card: rgba(255, 255, 255, 0.04);
+    --artwork: var(--teal-mid);
+    --artwork-opacity: 0.14;
+  }
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-hairline: var(--hairline);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+/*
+  The mangrove-and-city drawing is stored as an alpha mask with no colour of its
+  own, so a single asset can be tinted per theme and per palette. Kept faint —
+  it should register as texture you notice second, never as an image competing
+  with the words.
+*/
+.artwork-veil {
+  background-color: var(--artwork);
+  opacity: var(--artwork-opacity);
+  -webkit-mask-image: url("/mangrove-city.webp");
+  mask-image: url("/mangrove-city.webp");
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center 42%;
+  mask-position: center 42%;
+  -webkit-mask-size: min(115vh, 165vw) auto;
+  mask-size: min(115vh, 165vw) auto;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .rise {
+    animation: rise 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
