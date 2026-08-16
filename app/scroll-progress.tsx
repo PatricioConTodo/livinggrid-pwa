@@ -17,9 +17,12 @@ export default function ScrollProgress() {
 
     const update = () => {
       frame = 0;
-      // Progress across the first viewport of scrolling, clamped.
-      const span = window.innerHeight;
-      const p = Math.min(1, Math.max(0, window.scrollY / span));
+      // Spread across more than one screen of scrolling so the artwork eases
+      // out slowly rather than snapping away in the first flick of a thumb.
+      const span = window.innerHeight * 1.8;
+      const raw = Math.min(1, Math.max(0, window.scrollY / span));
+      // Smoothstep: gentle at both ends, no abrupt start or stop.
+      const p = raw * raw * (3 - 2 * raw);
       document.documentElement.style.setProperty("--sp", p.toFixed(4));
     };
 

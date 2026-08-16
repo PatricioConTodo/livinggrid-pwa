@@ -26,8 +26,8 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="panel flex items-start justify-center px-6 pb-24">
-        <div className="w-full max-w-md">
+      <section className="panel px-6 pb-24">
+        <div className="panel-inner mx-auto w-full max-w-md">
           <div className="rounded-xl border border-[var(--hairline)] bg-[var(--card)] p-6 backdrop-blur-md">
             {session?.user ? (
               <>
@@ -83,6 +83,12 @@ export default async function Home() {
           <p className="mt-6 text-[13px] leading-relaxed text-[var(--muted)]">
             A decentralized urban research network to guide policy, development,
             and conservation.
+          </p>
+
+          <p className="mt-5 text-[11px] leading-relaxed italic text-[var(--muted)] opacity-80">
+            Project by Patricio Con Todo
+            <br />
+            Artwork by Lee Pivnic
           </p>
         </div>
       </section>
