@@ -28,6 +28,19 @@ export default function ScrollProgress() {
     };
 
     measure();
+
+    /*
+      ResizeObserver rather than the resize event alone. The title can move for
+      reasons that never fire a window resize — a webfont finishing, the mobile
+      URL bar sliding away and changing viewport height, content reflowing.
+      Observing the document element catches viewport changes; observing the
+      title catches its own reflow.
+    */
+    const observer = new ResizeObserver(measure);
+    observer.observe(document.documentElement);
+    const heroEl = document.querySelector(".hero");
+    if (heroEl) observer.observe(heroEl);
+
     window.addEventListener("resize", measure, { passive: true });
     window.addEventListener("orientationchange", measure, { passive: true });
 
@@ -37,6 +50,7 @@ export default function ScrollProgress() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (reduced.matches) {
       return () => {
+        observer.disconnect();
         window.removeEventListener("resize", measure);
         window.removeEventListener("orientationchange", measure);
       };
@@ -66,6 +80,7 @@ export default function ScrollProgress() {
 
     return () => {
       if (frame) cancelAnimationFrame(frame);
+      observer.disconnect();
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
       window.removeEventListener("resize", measure);

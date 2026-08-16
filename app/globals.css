@@ -6,14 +6,38 @@
   held back for text-dense pages (reports, species profiles) where the herbarium
   feel reads better and tires the eye less.
 */
+/*
+  ONE SCHEME FOR NOW. The deep-teal configuration is used regardless of the
+  viewer's light/dark preference, deliberately, to keep design decisions in one
+  place while the product is being figured out. The light palette is preserved
+  below, commented, so it can be restored without re-deriving it.
+*/
 :root {
+  color-scheme: dark;
+
   --rose: #ecc5c9;
   --teal-deep: #1b8088;
   --teal-mid: #559ba1;
   --bone: #dbd6ca;
   --moss: #778c33;
 
-  /* Light: pale rose paper, deep teal ink — the shirt, inverted for reading. */
+  /* Deep teal-black water, warm rose-tinted light. */
+  --background: #0d1e20;
+  --foreground: #e9dcdd;
+  --muted: #92a9ab;
+  --accent: var(--teal-mid);
+  --accent-contrast: #06181a;
+  --hairline: #244145;
+  --card: rgba(16, 38, 41, 0.72);
+  --artwork-opacity: 0.43;
+  /* The inspo pink, which is exactly what it was printed for: rose on teal. */
+  --mark: var(--rose);
+}
+
+/*
+  Light scheme, retired 2026-08-16. Restore by moving these into a
+  prefers-color-scheme block and dropping `color-scheme: dark` above.
+
   --background: #fbf3f3;
   --foreground: #16383b;
   --muted: #5c7275;
@@ -22,26 +46,8 @@
   --hairline: #e0cfd1;
   --card: rgba(255, 253, 253, 0.74);
   --artwork-opacity: 0.25;
-  /* Deeper rose in light mode — the inspo pink is almost the background colour
-     here, so the bird would disappear into it. */
-  --mark: #c2647a;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Dark: deep teal-black water, warm rose-tinted light. */
-    --background: #0d1e20;
-    --foreground: #e9dcdd;
-    --muted: #92a9ab;
-    --accent: var(--teal-mid);
-    --accent-contrast: #06181a;
-    --hairline: #244145;
-    --card: rgba(16, 38, 41, 0.72);
-    --artwork-opacity: 0.43;
-    /* The inspo pink itself, which is what it was made for: rose on deep teal. */
-    --mark: var(--rose);
-  }
-}
+  --mark: #c2647a;   // deeper rose; the inspo pink vanishes on pale rose paper
+*/
 
 @theme inline {
   --color-background: var(--background);
@@ -82,8 +88,8 @@ body {
   pointer-events: none;
   background-image: url("/mangrove-teal.webp");
   background-repeat: no-repeat;
-  background-position: center 15svh;
-  background-size: auto min(112svh, 205vw);
+  background-position: center 5svh;
+  background-size: auto min(128svh, 235vw);
   opacity: calc(var(--artwork-opacity) * (1 - var(--sp, 0) * 0.4));
   transform: scale(calc(1 - var(--sp, 0) * 0.16));
   transform-origin: center 40%;
@@ -92,8 +98,8 @@ body {
 
 @media (min-width: 768px) {
   .artwork-veil {
-    background-position: center 11svh;
-    background-size: auto min(130svh, 105vw);
+    background-position: center 4svh;
+    background-size: auto min(148svh, 118vw);
   }
 }
 
@@ -103,17 +109,16 @@ body {
 */
 .hero {
   position: fixed;
-  top: 16svh;
+  top: 7svh;
   left: 0;
   right: 0;
   z-index: 10;
   pointer-events: none;
 }
 
-/* Less dead space above the title on a tall desktop window. */
 @media (min-width: 768px) {
   .hero {
-    top: 9svh;
+    top: 8svh;
   }
 }
 
@@ -122,8 +127,12 @@ body {
   z-index: 20;
   /* One screen of clear space before the panel begins to rise. */
   margin-top: 100svh;
-  /* Room to scroll, so the sticky stop below has somewhere to travel. */
-  min-height: 96svh;
+  /*
+    Sized so the card arrives at its stop just as the page runs out of scroll.
+    Any taller and there is dead scrolling after it lands, which is what made
+    the composition feel like it was drifting on desktop.
+  */
+  min-height: calc(100svh - var(--hero-bottom, 30svh) - 4svh);
 }
 
 /*

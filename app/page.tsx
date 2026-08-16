@@ -26,7 +26,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="panel px-6 pb-24">
+      <section className="panel px-6 pb-10">
         <div className="panel-inner mx-auto w-full max-w-md">
           <div className="rounded-xl border border-[var(--hairline)] bg-[var(--card)] p-6 backdrop-blur-md">
             {session?.user ? (
