@@ -21,7 +21,7 @@ import { useEffect } from "react";
 */
 
 const SHRINK_TO = 0.67; // scale at full scroll
-const FADE_TO = 0.5; // fraction of starting opacity at full scroll
+const FADE_TO = 0.355; // fraction of starting opacity at full scroll
 
 export default function ScrollProgress() {
   useEffect(() => {
@@ -47,6 +47,8 @@ export default function ScrollProgress() {
         0.67
       : 0.67;
 
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+
     const apply = () => {
       if (!art) return;
       const span = Math.max(
@@ -57,7 +59,16 @@ export default function ScrollProgress() {
       // Smoothstep: gentle at both ends, no abrupt start or stop.
       const p = raw * raw * (3 - 2 * raw);
 
-      art.style.transform = `scale(${(1 - p * (1 - SHRINK_TO)).toFixed(4)})`;
+      /*
+        Reduce Motion still gets the fade. A change in opacity is not a
+        vestibular trigger the way scaling or parallax is, so switching the
+        whole effect off was heavier than the setting asks for — and it left
+        the artwork frozen at full size for anyone with the setting on, which
+        is a great many phone users.
+      */
+      art.style.transform = reduced.matches
+        ? "scale(1)"
+        : `scale(${(1 - p * (1 - SHRINK_TO)).toFixed(4)})`;
       art.style.opacity = `${(baseOpacity * (1 - p * (1 - FADE_TO))).toFixed(4)}`;
     };
 
@@ -88,15 +99,11 @@ export default function ScrollProgress() {
     const fonts = (document as Document & { fonts?: FontFaceSet }).fonts;
     fonts?.ready.then(onResize);
 
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (reduced.matches && art) {
-      // Static composition, no scroll-linked motion.
-      art.style.transform = "";
-      art.style.opacity = "";
-      window.removeEventListener("scroll", apply);
-    }
+    // Re-apply if the motion preference changes mid-session.
+    reduced.addEventListener?.("change", apply);
 
     return () => {
+      reduced.removeEventListener?.("change", apply);
       observer.disconnect();
       window.removeEventListener("scroll", apply);
       window.removeEventListener("resize", onResize);

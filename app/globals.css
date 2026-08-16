@@ -23,7 +23,8 @@
 
   /* Deep teal-black water, warm rose-tinted light. */
   --background: #0d1e20;
-  --foreground: #e9dcdd;
+  /* Neutral, so the only pink on the page is the wordmark, mark and button. */
+  --foreground: #e4eae9;
   --muted: #92a9ab;
   --accent: var(--teal-mid);
   --accent-contrast: #06181a;
@@ -31,7 +32,7 @@
   --card: rgba(16, 38, 41, 0.72);
   /* Start brighter; the fade factor below is tuned so the faded end state lands
      where it already was rather than rising with it. */
-  --artwork-opacity: 0.67;
+  --artwork-opacity: 0.8;
   /* The inspo pink, which is exactly what it was printed for: rose on teal. */
   --mark: var(--rose);
 }
