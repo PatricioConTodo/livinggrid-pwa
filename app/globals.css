@@ -23,14 +23,15 @@
 
   /* Deep teal-black water, warm rose-tinted light. */
   --background: #0d1e20;
-  /* Type takes the same rose as the mark, so the palette reads as one system. */
-  --foreground: #ecc5c9;
-  --muted: #bb99a0;
+  --foreground: #e9dcdd;
+  --muted: #92a9ab;
   --accent: var(--teal-mid);
   --accent-contrast: #06181a;
   --hairline: #244145;
   --card: rgba(16, 38, 41, 0.72);
-  --artwork-opacity: 0.56;
+  /* Start brighter; the fade factor below is tuned so the faded end state lands
+     where it already was rather than rising with it. */
+  --artwork-opacity: 0.67;
   /* The inspo pink, which is exactly what it was printed for: rose on teal. */
   --mark: var(--rose);
 }
@@ -82,23 +83,37 @@ body {
   progress, published by ScrollProgress: the artwork shrinks and fades as the
   panel rises to cover it.
 */
+/*
+  Two elements on purpose. Mobile browsers hoist position:fixed elements into
+  their own compositing layer and do not reliably re-rasterise them during a
+  scroll gesture, so a transform applied to the fixed element itself can simply
+  never appear — which is why this animated on desktop and stayed frozen on a
+  phone. The outer element does the pinning; a normal absolutely positioned
+  child does the moving.
+*/
 .artwork-veil {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
+  overflow: hidden;
+}
+
+.artwork-veil-inner {
+  position: absolute;
+  inset: 0;
   background-image: url("/mangrove-teal.webp");
   background-repeat: no-repeat;
   background-position: center -4svh;
   background-size: auto min(128svh, 235vw);
-  opacity: calc(var(--artwork-opacity) * (1 - var(--sp, 0) * 0.4));
+  opacity: calc(var(--artwork-opacity) * (1 - var(--sp, 0) * 0.5));
   transform: scale(calc(1 - var(--sp, 0) * 0.33));
   transform-origin: center 32%;
   will-change: transform, opacity;
 }
 
 @media (min-width: 768px) {
-  .artwork-veil {
+  .artwork-veil-inner {
     background-position: center -13svh;
     /* Hard ceiling so a fullscreen window does not keep growing the drawing
        while the type stays put, which opens a gap under the title. */

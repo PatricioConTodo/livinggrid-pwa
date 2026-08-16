@@ -9,7 +9,9 @@ export default async function Home() {
       <ScrollProgress />
 
       {/* Mangrove roots holding a city — the thesis, drawn. Purely decorative. */}
-      <div className="artwork-veil" aria-hidden="true" />
+      <div className="artwork-veil" aria-hidden="true">
+        <div className="artwork-veil-inner" />
+      </div>
 
       <section className="hero px-6">
         <div className="rise mx-auto w-full max-w-md">
@@ -71,7 +73,7 @@ export default async function Home() {
                 >
                   <button
                     type="submit"
-                    className="mt-6 w-full rounded-lg bg-[var(--accent)] px-4 py-3 text-sm font-medium text-[var(--accent-contrast)] transition-opacity hover:opacity-90"
+                    className="mt-6 w-full rounded-lg bg-[var(--rose)] px-4 py-3 text-sm font-medium text-[#0d1e20] transition-opacity hover:opacity-90"
                   >
                     Continue with Google
                   </button>
