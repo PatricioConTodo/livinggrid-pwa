@@ -1,12 +1,17 @@
 import { auth, signIn, signOut } from "@/auth";
 import ScrollProgress from "./scroll-progress";
 
-export default async function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ debug?: string }>;
+}) {
   const session = await auth();
+  const { debug } = await searchParams;
 
   return (
     <main className="relative">
-      <ScrollProgress />
+      <ScrollProgress debug={debug === "1"} />
 
       {/* Mangrove roots holding a city — the thesis, drawn. Purely decorative. */}
       <div className="artwork-veil" aria-hidden="true">
