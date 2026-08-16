@@ -106,10 +106,12 @@ body {
   background-repeat: no-repeat;
   background-position: center -4svh;
   background-size: auto min(128svh, 235vw);
-  opacity: calc(var(--artwork-opacity) * (1 - var(--sp, 0) * 0.5));
-  transform: scale(calc(1 - var(--sp, 0) * 0.33));
+  /* Starting values only. The script overwrites transform and opacity inline
+     on this element; expressing them as calc() over an inherited custom
+     property did not survive mobile compositing. */
+  opacity: var(--artwork-opacity);
+  transform: scale(1);
   transform-origin: center 32%;
-  will-change: transform, opacity;
 }
 
 @media (min-width: 768px) {

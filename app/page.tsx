@@ -17,7 +17,7 @@ export default async function Home() {
         <div className="rise mx-auto w-full max-w-md">
           <div className="flex items-center gap-3.5">
             <span className="mark h-11 w-11 shrink-0" role="img" aria-label="Living Grid" />
-            <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
+            <h1 className="text-4xl font-semibold tracking-tight text-[var(--rose)] sm:text-5xl">
               Living Grid
             </h1>
           </div>
