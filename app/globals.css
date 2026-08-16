@@ -21,7 +21,7 @@
   --accent-contrast: #ffffff;
   --hairline: #e0cfd1;
   --card: rgba(255, 253, 253, 0.74);
-  --artwork-opacity: 0.21;
+  --artwork-opacity: 0.25;
   /* Deeper rose in light mode — the inspo pink is almost the background colour
      here, so the bird would disappear into it. */
   --mark: #c2647a;
@@ -37,7 +37,7 @@
     --accent-contrast: #06181a;
     --hairline: #244145;
     --card: rgba(16, 38, 41, 0.72);
-    --artwork-opacity: 0.36;
+    --artwork-opacity: 0.43;
     /* The inspo pink itself, which is what it was made for: rose on deep teal. */
     --mark: var(--rose);
   }
@@ -82,7 +82,7 @@ body {
   pointer-events: none;
   background-image: url("/mangrove-teal.webp");
   background-repeat: no-repeat;
-  background-position: center 30svh;
+  background-position: center 15svh;
   background-size: auto min(112svh, 205vw);
   opacity: calc(var(--artwork-opacity) * (1 - var(--sp, 0) * 0.4));
   transform: scale(calc(1 - var(--sp, 0) * 0.16));
@@ -92,7 +92,7 @@ body {
 
 @media (min-width: 768px) {
   .artwork-veil {
-    background-position: center 26svh;
+    background-position: center 11svh;
     background-size: auto min(130svh, 105vw);
   }
 }
@@ -108,6 +108,13 @@ body {
   right: 0;
   z-index: 10;
   pointer-events: none;
+}
+
+/* Less dead space above the title on a tall desktop window. */
+@media (min-width: 768px) {
+  .hero {
+    top: 9svh;
+  }
 }
 
 .panel {
@@ -126,13 +133,9 @@ body {
 */
 .panel-inner {
   position: sticky;
-  top: 42svh;
-}
-
-@media (min-width: 768px) {
-  .panel-inner {
-    top: 38svh;
-  }
+  /* Derived from the title's measured bottom edge, with a fallback for the
+     first paint and for scripting-off. */
+  top: calc(var(--hero-bottom, 32svh) + 5svh);
 }
 
 /*

@@ -10,8 +10,37 @@ import { useEffect } from "react";
 */
 export default function ScrollProgress() {
   useEffect(() => {
+    /*
+      Publish where the title actually ends, in pixels, so the panel's stop line
+      can be derived from it rather than guessed in viewport units. On a real
+      phone svh and the visual viewport diverge as the URL bar hides, which is
+      how the card ended up overlapping the title on device but not in
+      simulation. Measuring removes the guess entirely.
+    */
+    const measure = () => {
+      const hero = document.querySelector<HTMLElement>(".hero");
+      if (!hero) return;
+      const bottom = hero.getBoundingClientRect().bottom;
+      document.documentElement.style.setProperty(
+        "--hero-bottom",
+        `${Math.round(bottom)}px`,
+      );
+    };
+
+    measure();
+    window.addEventListener("resize", measure, { passive: true });
+    window.addEventListener("orientationchange", measure, { passive: true });
+
+    const fonts = (document as Document & { fonts?: FontFaceSet }).fonts;
+    fonts?.ready.then(measure);
+
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (reduced.matches) return;
+    if (reduced.matches) {
+      return () => {
+        window.removeEventListener("resize", measure);
+        window.removeEventListener("orientationchange", measure);
+      };
+    }
 
     let frame = 0;
 
@@ -39,6 +68,8 @@ export default function ScrollProgress() {
       if (frame) cancelAnimationFrame(frame);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
+      window.removeEventListener("resize", measure);
+      window.removeEventListener("orientationchange", measure);
     };
   }, []);
 
