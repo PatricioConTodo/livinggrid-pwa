@@ -39,6 +39,29 @@ export default function ScrollProgress({ debug = false }: { debug?: boolean }) {
         ) || 0.8
       : 0.8;
 
+    /*
+      Scale the DRAWING, not the box.
+
+      The element is viewport-sized and the artwork is wider than the screen, so
+      it is cropped at the viewport edges — invisible while the element fills the
+      screen. Transforming the element shrank that cropped rectangle, marching
+      its hard left and right edges into view. Animating background-size instead
+      keeps the element full-bleed, so the crop stays off-screen where it belongs.
+
+      The stylesheet remains the source of truth for the base size. Clearing the
+      inline value lets the computed style report it, which avoids duplicating
+      the breakpoint maths here.
+    */
+    let baseArtHeight = 0;
+    const readBaseArtSize = () => {
+      if (!art) return;
+      art.style.backgroundSize = "";
+      const match = getComputedStyle(art)
+        .backgroundSize.match(/([\d.]+)px\s*$/);
+      baseArtHeight = match ? parseFloat(match[1]) : 0;
+    };
+    readBaseArtSize();
+
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     /*
@@ -60,9 +83,10 @@ export default function ScrollProgress({ debug = false }: { debug?: boolean }) {
       const raw = Math.min(1, Math.max(0, y / span));
       const p = raw * raw * (3 - 2 * raw);
 
-      art.style.transform = reduced.matches
-        ? "scale(1)"
-        : `scale(${(1 - p * (1 - SHRINK_TO)).toFixed(4)})`;
+      const scale = reduced.matches ? 1 : 1 - p * (1 - SHRINK_TO);
+      if (baseArtHeight > 0) {
+        art.style.backgroundSize = `auto ${(baseArtHeight * scale).toFixed(1)}px`;
+      }
       art.style.opacity = `${(baseOpacity * (1 - p * (1 - FADE_TO))).toFixed(4)}`;
 
       if (debug) {
@@ -72,8 +96,8 @@ export default function ScrollProgress({ debug = false }: { debug?: boolean }) {
           y: Math.round(y),
           span: Math.round(span),
           p: Number(p.toFixed(3)),
-          applied: art.style.transform,
-          computed: getComputedStyle(art).transform,
+          applied: art.style.backgroundSize,
+          computed: getComputedStyle(art).backgroundSize,
           reduced: reduced.matches,
           scroller:
             document.scrollingElement === document.documentElement
@@ -93,6 +117,7 @@ export default function ScrollProgress({ debug = false }: { debug?: boolean }) {
 
     const observer = new ResizeObserver(() => {
       measure();
+      readBaseArtSize();
       apply();
     });
     observer.observe(document.documentElement);

@@ -107,12 +107,10 @@ body {
   background-repeat: no-repeat;
   background-position: center -4svh;
   background-size: auto min(128svh, 235vw);
-  /* Starting values only. The script overwrites transform and opacity inline
-     on this element; expressing them as calc() over an inherited custom
-     property did not survive mobile compositing. */
+  /* Starting values only. The script overwrites background-size and opacity
+     inline on this element. It animates background-size rather than transform
+     so the element stays full-bleed and its cropped edges never enter frame. */
   opacity: var(--artwork-opacity);
-  transform: scale(1);
-  transform-origin: center 32%;
 }
 
 @media (min-width: 768px) {
