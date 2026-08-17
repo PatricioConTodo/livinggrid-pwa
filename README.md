@@ -75,3 +75,13 @@ scripted motion was missing.
 
 **Check the browser console first.** The error was sitting there naming the file
 and the line.
+
+## Licence
+
+Apache 2.0 — see [LICENSE](LICENSE) and [NOTICE](NOTICE).
+
+That covers the **software** only. Audio submitted by contributors is licensed
+separately: contributors retain copyright and grant Living Grid a non-exclusive,
+perpetual licence to process and distribute it for the platform's ecological
+mission. The interface artwork is used under separate written permission from
+the artist and is not covered by this licence.
